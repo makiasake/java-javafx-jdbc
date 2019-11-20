@@ -5,7 +5,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.xml.crypto.Data;
+
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -26,7 +29,7 @@ import javafx.stage.Stage;
 import model.entities.Department;
 import model.services.DepartmentService;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChangeListener {
 
 	private DepartmentService departmentService;
 	
@@ -87,6 +90,7 @@ public class DepartmentListController implements Initializable {
 			
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartment(obj);
+			controller.subscribeDataChangeListener(this);
 			controller.updateFormData();
 			controller.setDepartmentService(new DepartmentService());
 			
@@ -103,4 +107,8 @@ public class DepartmentListController implements Initializable {
 		}
 	}
 
+	@Override
+	public void onDataChanged() {
+		updateTableView();		
+	}
 }
