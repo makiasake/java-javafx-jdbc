@@ -35,7 +35,7 @@ import model.services.SellerService;
 
 public class SellerListController implements Initializable, DataChangeListener {
 
-	private SellerService departmentService;
+	private SellerService sellerService;
 	
 	@FXML
 	private TableView<Seller> tableViewSeller;
@@ -67,7 +67,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 	private ObservableList<Seller> obsSellerList;
 	
 	public void setSellerService(SellerService departmentService) {
-		this.departmentService = departmentService;
+		this.sellerService = departmentService;
 	}
 	
 	@FXML
@@ -98,11 +98,11 @@ public class SellerListController implements Initializable, DataChangeListener {
 	}
 	
 	public void updateTableView() {
-		if (departmentService == null) {
+		if (sellerService == null) {
 			throw new IllegalStateException("Seller service is null");
 		}
 		
-		List<Seller> departments = departmentService.findAll();
+		List<Seller> departments = sellerService.findAll();
 		obsSellerList = FXCollections.observableArrayList(departments);
 		tableViewSeller.setItems(obsSellerList);
 		initEditButtons();
@@ -179,12 +179,12 @@ public class SellerListController implements Initializable, DataChangeListener {
 		Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete?");
 
 		if (result.get() == ButtonType.OK) {
-			if (departmentService == null) {
+			if (sellerService == null) {
 				throw new IllegalStateException("Service was null");
 			}
 
 			try {
-				departmentService.remove(department);
+				sellerService.remove(department);
 				updateTableView();
 			} catch (DbIntegrityException e) {
 				Alerts.showAlert("Error removing department", null, e.getMessage(), AlertType.ERROR);
