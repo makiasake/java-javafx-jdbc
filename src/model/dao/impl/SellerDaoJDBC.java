@@ -39,7 +39,9 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setString(2, seller.getEmail());
 			st.setDate(3, new java.sql.Date(seller.getBithDate().getTime()));
 			st.setDouble(4, seller.getBaseSalary());
-			st.setInt(5, seller.getDepartment().getId());
+			if (seller.getDepartment() != null && seller.getDepartment().getId() != null) {
+				st.setInt(5, seller.getDepartment().getId());	
+			}
 			
 			int rowsAffected = st.executeUpdate();
 			
